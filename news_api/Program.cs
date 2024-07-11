@@ -38,6 +38,81 @@ builder.Services.AddControllers().AddJsonOptions(
     }
 );
 
+
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/auth/login";
+        options.LogoutPath = "/auth/logout";
+        options.AccessDeniedPath = "/auth/accessdenied";
+    });
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "News API",
+        Version = "v1"
+    });
+});
+
+
+builder.Services.AddEndpointsApiExplorer();
+
+// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") // React app URL
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
+
+
+// ---------------------------------------------------------------------------
+var app = builder.Build();
+
+
+
+// Seed the database.
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+}
+
+
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
+app.UseRouting();
+app.UseCors("AllowReactApp");
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.UseAuthentication();
+app.MapControllers();
+
+app.Run();
+
+
+
+
+
+
+
+
+
 // var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 // var jwtKey = builder.Configuration["Jwt:Key"];
 // var jwtIssuer = builder.Configuration["Jwt:Issuer"];
@@ -101,63 +176,21 @@ builder.Services.AddControllers().AddJsonOptions(
 //     };
 // });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/auth/login";
-        options.LogoutPath = "/auth/logout";
-        options.AccessDeniedPath = "/auth/accessdenied";
-    });
-
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "News API",
-        Version = "v1"
-    });
-});
-
-
-builder.Services.AddEndpointsApiExplorer();
-
-// Add services to the container.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:3000") // React app URL
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
-});
-
-
-var app = builder.Build();
-
-// Seed the database.
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    SeedData.Initialize(services);
-}
 
 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-
-app.UseRouting();
-app.UseCors("AllowReactApp");
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.UseAuthentication();
-app.MapControllers();
-
-app.Run();
+// // Seed the database.
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     try
+//     {
+//         SeedData.Initialize(services);
+//     }
+//     catch (Exception ex)
+//     {
+//         var logger = services.GetRequiredService<ILogger<Program>>();
+//         logger.LogError(ex, "An error occurred seeding the DB.");
+//     }
+// }

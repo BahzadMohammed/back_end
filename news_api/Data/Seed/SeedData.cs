@@ -16,6 +16,9 @@ namespace news_api.Data.Seed
             using (var scope = serviceProvider.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+                    
+                // Ensure the database is created
+                context.Database.EnsureCreated();
 
 
                 // Look for any users.
@@ -29,25 +32,26 @@ namespace news_api.Data.Seed
                             IsAdmin = true
                         }
                     );
-                }
-
-                // Look for any genres.
-                if (!context.Genres.Any())
-                {
-                    context.Genres.AddRange(
-                        new Genre { Name = "Technology" },
-                        new Genre { Name = "Health" },
-                        new Genre { Name = "Sports" },
-                        new Genre { Name = "Business" },
-                        new Genre { Name = "Politics" },
-                        new Genre { Name = "Science" },
-                        new Genre { Name = "Entertainment" }
-                    );
                     context.SaveChanges();
                 }
 
+                // Look for any genres.
+                // if (!context.Genres.Any())
+                // {
+                //     context.Genres.AddRange(
+                //         new Genre { Name = "Technology" },
+                //         new Genre { Name = "Health" },
+                //         new Genre { Name = "Sports" },
+                //         new Genre { Name = "Business" },
+                //         new Genre { Name = "Politics" },
+                //         new Genre { Name = "Science" },
+                //         new Genre { Name = "Entertainment" }
+                //     );
+                //     context.SaveChanges();
+                // }
+
                 // Look for any news.
-                if (!context.News.Any())
+                if (true)
                 {
                     var technologyGenre = context.Genres.First(g => g.Name == "Technology");
                     var healthGenre = context.Genres.First(g => g.Name == "Health");
@@ -224,8 +228,8 @@ namespace news_api.Data.Seed
                             GenreId = scienceGenre.GenreId
                         }
                     );
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
 
             }
         }
