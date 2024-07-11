@@ -37,7 +37,7 @@ namespace news_api.Migrations
 
                     b.HasKey("GenreId");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
 
                     b.HasData(
                         new
@@ -120,7 +120,7 @@ namespace news_api.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("News");
+                    b.ToTable("News", (string)null);
                 });
 
             modelBuilder.Entity("news_api.model.User", b =>
@@ -146,7 +146,7 @@ namespace news_api.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("news_api.model.News", b =>

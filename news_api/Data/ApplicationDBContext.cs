@@ -30,6 +30,9 @@ namespace news_api.Data
                 new Genre { GenreId = 7, Name = "Entertainment" }
             );
 
+            // Seed data for News
+            // modelBuilder.Entity<News>().HasData();
+
             // >> Set the types of on delete foreign keys
             // modelBuilder.Entity<News>()
             //     .HasOne(n => n.Genre)

@@ -45,7 +45,7 @@ namespace news_api.Repository
             var existUser = await _context.Users.FindAsync(id);
             if (existUser == null) return null;
 
-            existUser.Username = user.Username;
+            existUser.Email = user.Email;
             if(user.PasswordHash != null) {
                 existUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
             }
@@ -66,9 +66,9 @@ namespace news_api.Repository
         }
 
         // #6
-        public async Task<User?> AuthenticateUserAsync(string username, string password)
+        public async Task<User?> AuthenticateUserAsync(string email, string password)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
                 return null;

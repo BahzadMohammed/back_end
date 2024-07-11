@@ -9,15 +9,16 @@ namespace news_api.DTOs
     public class UserDTO
     {
         public int UserId { get; set; }
-        public string Username { get; set; } = string.Empty;
-        public bool IsAdmin { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public bool IsAdmin { get; set; } = true;
     }
 
     public class CreateUserDTO
     {
         [Required]
-        [MaxLength(100, ErrorMessage = "Username is too long")]
-        public string Username { get; set; } = string.Empty;
+        [EmailAddress]
+        // [MaxLength(100, ErrorMessage = "Email is too long")]
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]
@@ -29,12 +30,13 @@ namespace news_api.DTOs
     public class LoginDTO
     {
         [Required]
-        [MaxLength(100, ErrorMessage = "Username is too long")]
-        public string Username { get; set; } = string.Empty;
+        [EmailAddress]
+        // [MaxLength(100, ErrorMessage = "Email is too long")]
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]
-        [MaxLength(256)]
+        // [MaxLength(256)]
         public string PasswordHash { get; set; } = string.Empty;
     }
 

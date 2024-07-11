@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using news_api.model;
+using Microsoft.Extensions.Logging;
 
 namespace news_api.Data.Seed
 {
@@ -17,18 +18,18 @@ namespace news_api.Data.Seed
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
 
 
-                // // Look for any users.
-                // if (!context.Users.Any())
-                // {
-                //     context.Users.AddRange(
-                //         new User
-                //         {
-                //             Username = "admin",
-                //             PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"),
-                //             IsAdmin = true
-                //         }
-                //     );
-                // }
+                // Look for any users.
+                if (!context.Users.Any())
+                {
+                    context.Users.AddRange(
+                        new User
+                        {
+                            Email = "admin@example.com",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456789"),
+                            IsAdmin = true
+                        }
+                    );
+                }
 
                 // Look for any genres.
                 if (!context.Genres.Any())
@@ -62,7 +63,7 @@ namespace news_api.Data.Seed
                             Title = "New Tech Innovations",
                             ShortDescription = "Tech innovations are rapidly spreading across the world...",
                             Content = "Latest advancements in technology...",
-                            ImageUrl = "https://unsplash.com/photos/a-mountain-range-covered-in-snow-under-a-blue-sky-SyfvrXRy28Y",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-1),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 50,
@@ -73,7 +74,7 @@ namespace news_api.Data.Seed
                             Title = "Health Benefits of Yoga",
                             ShortDescription = "Yoga offers numerous health benefits...",
                             Content = "Yoga offers numerous health benefits...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-2),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 100,
@@ -84,7 +85,7 @@ namespace news_api.Data.Seed
                             Title = "Startup Ecosystem",
                             ShortDescription = "The startup ecosystem is thriving...",
                             Content = "The startup ecosystem is thriving...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-3),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 75,
@@ -95,7 +96,7 @@ namespace news_api.Data.Seed
                             Title = "Business Growth",
                             ShortDescription = "Business growth is rapid...",
                             Content = "Business growth is rapid...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-4),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 150,
@@ -106,7 +107,7 @@ namespace news_api.Data.Seed
                             Title = "Health Benefits of Yoga",
                             ShortDescription = "Yoga offers numerous health benefits...",
                             Content = "Yoga offers numerous health benefits...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-5),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 200,
@@ -117,7 +118,7 @@ namespace news_api.Data.Seed
                             Title = "Startup Ecosystem",
                             ShortDescription = "The startup ecosystem is thriving...",
                             Content = "The startup ecosystem is thriving...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-6),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 250,
@@ -128,7 +129,7 @@ namespace news_api.Data.Seed
                             Title = "Business Growth",
                             ShortDescription = "Business growth is rapid...",
                             Content = "Business growth is rapid...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-7),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 300,
@@ -139,7 +140,7 @@ namespace news_api.Data.Seed
                             Title = "War in Ukraine",
                             ShortDescription = "War in Ukraine is on the horizon...",
                             Content = "War in Ukraine is on the horizon...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-8),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 350,
@@ -150,7 +151,7 @@ namespace news_api.Data.Seed
                             Title = "Fun Inventions",
                             ShortDescription = "Fun Inventions are on the rise...",
                             Content = "Fun Inventions are on the rise...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-9),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 400,
@@ -161,7 +162,7 @@ namespace news_api.Data.Seed
                             Title = "Science Advancements",
                             ShortDescription = "Science advancements are on the horizon...",
                             Content = "Science advancements are on the horizon...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-10),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 450,
@@ -172,7 +173,7 @@ namespace news_api.Data.Seed
                             Title = "Tech Innovations",
                             ShortDescription = "Tech innovations are rapidly spreading across the world...",
                             Content = "Latest advancements in technology...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-11),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 500,
@@ -183,7 +184,7 @@ namespace news_api.Data.Seed
                             Title = "Sports Events",
                             ShortDescription = "Sports events are on the rise...",
                             Content = "Sports events are on the rise...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-12),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 550,
@@ -194,7 +195,7 @@ namespace news_api.Data.Seed
                             Title = "Entertainment Events",
                             ShortDescription = "Entertainment events are on the rise...",
                             Content = "Entertainment events are on the rise...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-13),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 600,
@@ -205,7 +206,7 @@ namespace news_api.Data.Seed
                             Title = "Science Advancements",
                             ShortDescription = "Science advancements are on the horizon...",
                             Content = "Science advancements are on the horizon...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-14),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 650,
@@ -216,7 +217,7 @@ namespace news_api.Data.Seed
                             Title = "Astronomy Events",
                             ShortDescription = "Astronomy events are on the rise...",
                             Content = "Astronomy events are on the rise...",
-                            ImageUrl = "https://unsplash.com/s/photos/mountains",
+                            ImageUrl = "https://miro.medium.com/v2/resize:fit:3296/1*TTO1f4XiPkveK2x8ct8SwQ.png",
                             PostDate = DateTime.Now.AddDays(-15),
                             LastUpdateDate = DateTime.Now,
                             NumberOfReads = 700,
@@ -224,8 +225,8 @@ namespace news_api.Data.Seed
                         }
                     );
                 }
-
                 context.SaveChanges();
+
             }
         }
     }

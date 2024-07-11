@@ -8,6 +8,7 @@ namespace news_api.DTOs
 {
     public class NewsDTO
     {
+        public int NewsId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string ShortDescription { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
