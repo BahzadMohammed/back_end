@@ -22,22 +22,22 @@ namespace news_api.DTOs
     public class CreateNewsDTO
     {
         [Required]
-        [MaxLength(50, ErrorMessage = "Title is too long")]
-        [MinLength(5, ErrorMessage = "Title is too short")]
+        // [MaxLength(50, ErrorMessage = "Title is too long")]
+        // [MinLength(5, ErrorMessage = "Title is too short")]
         public string Title { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100, ErrorMessage = "Short description is too long")]
-        [MinLength(20, ErrorMessage = "Short description is too short")]
+        // [MaxLength(100, ErrorMessage = "Short description is too long")]
+        // [MinLength(20, ErrorMessage = "Short description is too short")]
         public string ShortDescription { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(2000, ErrorMessage = "Content is too long")]
-        [MinLength(100, ErrorMessage = "Content is too short")]
+        // [MaxLength(2000, ErrorMessage = "Content is too long")]
+        // [MinLength(100, ErrorMessage = "Content is too short")]
         public string Content { get; set; } = string.Empty;
 
         [Url]
-        [MaxLength(200, ErrorMessage = "ImageUrl is too long")]
+        // [MaxLength(200, ErrorMessage = "ImageUrl is too long")]
         public string ImageUrl { get; set; } = string.Empty;
 
         [Required]
@@ -47,24 +47,36 @@ namespace news_api.DTOs
     public class UpdateNewsDTO 
     {
         [Required]
-        [MaxLength(50, ErrorMessage = "Title is too long")]
-        [MinLength(5, ErrorMessage = "Title is too short")]
         public string Title { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100, ErrorMessage = "Short description is too long")]
-        [MinLength(10, ErrorMessage = "Short description is too short")]
         public string ShortDescription { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(2000, ErrorMessage = "Content is too long")]
-        [MinLength(10, ErrorMessage = "Content is too short")]
         public string Content { get; set; } = string.Empty;
 
-        [MaxLength(200, ErrorMessage = "ImageUrl is too long")]
-        public string ImageUrl { get; set; } = string.Empty;
+        [Required]
+        public IFormFile ?Image { get; set; } 
 
         [Required]
+        public int GenreId { get; set; }
+    }
+
+    public class CreateNewsWithImageDTO
+    {
+        [Required]
+        public string Title { get; set; } = string.Empty;
+
+        [Required]
+        public string ShortDescription { get; set; } = string.Empty;
+
+        [Required]
+        public string Content { get; set; } = string.Empty;
+
+        [Required]
+        public IFormFile ?Image { get; set; }
+
+        [Required] 
         public int GenreId { get; set; }
     }
 

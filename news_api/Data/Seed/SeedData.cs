@@ -51,7 +51,7 @@ namespace news_api.Data.Seed
                 // }
 
                 // Look for any news.
-                if (true)
+                if (!context.News.Any())
                 {
                     var technologyGenre = context.Genres.First(g => g.Name == "Technology");
                     var healthGenre = context.Genres.First(g => g.Name == "Health");

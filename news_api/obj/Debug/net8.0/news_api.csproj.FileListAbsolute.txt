@@ -143,3 +143,4 @@ C:\Users\bahza\Desktop\news website\back_end\news_api\obj\Debug\net8.0\news_api.
 C:\Users\bahza\Desktop\news website\back_end\news_api\obj\Debug\net8.0\news_api.genruntimeconfig.cache
 C:\Users\bahza\Desktop\news website\back_end\news_api\obj\Debug\net8.0\ref\news_api.dll
 C:\Users\bahza\Desktop\news website\back_end\news_api\obj\Debug\net8.0\news_api.sourcelink.json
+C:\Users\bahza\Desktop\news website\back_end\news_api\bin\Debug\net8.0\news_api.staticwebassets.runtime.json

@@ -13,11 +13,13 @@ namespace news_api.Repository
     public class NewsRepository : INewsRepository
     {
         private readonly ApplicationDBContext _context;
+        private readonly IWebHostEnvironment _environment;
         private int pageSize = 10;
 
-        public NewsRepository(ApplicationDBContext context)
+        public NewsRepository(ApplicationDBContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // #1
@@ -45,49 +47,84 @@ namespace news_api.Repository
         }
 
         // #4
+        // public async Task<News?> UpdateNewsAsync(int id, News news)
+        // {
+        //     var existNews = await _context.News.FindAsync(id);
+        //     if (existNews == null) return null;
+
+        //     existNews.Title = news.Title;
+        //     existNews.ShortDescription = news.ShortDescription;
+        //     existNews.Content = news.Content;
+        //     existNews.ImageUrl = news.ImageUrl;
+        //     existNews.LastUpdateDate = DateTime.Now;
+        //     existNews.GenreId = news.GenreId;
+
+        //     await _context.SaveChangesAsync();
+        //     return existNews;
+        // }
+
         public async Task<News?> UpdateNewsAsync(int id, News news)
         {
-            var existNews = await _context.News.FindAsync(id);
-            if (existNews == null) return null;
+            var existingNews = await _context.News.FindAsync(id);
+            if (existingNews == null)
+            {
+                return null;
+            }
 
-            existNews.Title = news.Title;
-            existNews.ShortDescription = news.ShortDescription;
-            existNews.Content = news.Content;
-            existNews.ImageUrl = news.ImageUrl;
-            existNews.LastUpdateDate = DateTime.Now;
-            existNews.GenreId = news.GenreId;
-
+            _context.Entry(existingNews).CurrentValues.SetValues(news);
             await _context.SaveChangesAsync();
-            return existNews;
+
+            return existingNews;
         }
 
+
         // #5
+        // public async Task<bool> DeleteNewsAsync(int id)
+        // {
+        //     var news = await _context.News.FindAsync(id);
+        //     if (news == null) return false;
+
+        //     _context.News.Remove(news);
+        //     await _context.SaveChangesAsync();
+        //     return true;
+        // }
+
         public async Task<bool> DeleteNewsAsync(int id)
         {
             var news = await _context.News.FindAsync(id);
             if (news == null) return false;
+
+            // Remove the image file
+            if (!string.IsNullOrEmpty(news.ImageUrl))
+            {
+                var imagePath = Path.Combine(_environment.WebRootPath, news.ImageUrl.TrimStart('/'));
+                if (File.Exists(imagePath))
+                {
+                    File.Delete(imagePath);
+                }
+            }
 
             _context.News.Remove(news);
             await _context.SaveChangesAsync();
             return true;
         }
 
+
         // #6
         public async Task<(IEnumerable<News?>?, int)> GetNewsByGenreAsync(int genreId, QueryObject queryObject)
         {
-            // var news = await _context.News
-            // .Where(n => n.GenreId == queryObject.genreId)
-            // .ToListAsync();
-
-            var totalNews = await _context.News.CountAsync();
+            var totalNews = 0;
             var news = new List<News>();
 
-            // check the gernreId is not null
-            if(!string.IsNullOrEmpty(genreId.ToString())) {
-                // check the sortBy is not null
-                if(!string.IsNullOrEmpty(queryObject.sortBy)) {
-                    // check the sortBy is numberOfReads or not
-                    if(queryObject.sortBy.Equals("numberOfReads", StringComparison.OrdinalIgnoreCase)){
+            if (!string.IsNullOrEmpty(genreId.ToString()))
+            {
+                // Get the total count of news items that match the genreId
+                totalNews = await _context.News.CountAsync(n => n.GenreId == genreId);
+
+                if (!string.IsNullOrEmpty(queryObject.sortBy))
+                {
+                    if (queryObject.sortBy.Equals("numberOfReads", StringComparison.OrdinalIgnoreCase))
+                    {
                         news = await _context.News
                             .Include(n => n.Genre)
                             .Where(n => n.GenreId == genreId)
@@ -95,12 +132,9 @@ namespace news_api.Repository
                             .Skip((queryObject.pageNumber - 1) * pageSize)
                             .Take(pageSize)
                             .ToListAsync();
-
-                        totalNews = news.Count();
-                        return (news, totalNews);
-                    } 
-                    else if (queryObject.sortBy.Equals("postDate", StringComparison.OrdinalIgnoreCase)) {
-                        // check the sortBy is postDate or not
+                    }
+                    else if (queryObject.sortBy.Equals("postDate", StringComparison.OrdinalIgnoreCase))
+                    {
                         news = await _context.News
                             .Include(n => n.Genre)
                             .Where(n => n.GenreId == genreId)
@@ -108,41 +142,40 @@ namespace news_api.Repository
                             .Skip((queryObject.pageNumber - 1) * pageSize)
                             .Take(pageSize)
                             .ToListAsync();
-
-                        totalNews = news.Count();
-                        return (news, totalNews);
-                    } 
-                    else {
-                        // if the sortBy is not numberOfReads
+                    }
+                    else
+                    {
                         return (null, 0);
                     }
                 }
+                else
+                {
+                    news = await _context.News
+                        .Include(n => n.Genre)
+                        .Where(n => n.GenreId == genreId)
+                        .OrderByDescending(n => n.PostDate)
+                        .Skip((queryObject.pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
+                }
 
-                // if the sortBy is null
-                news = await _context.News
-                    .Include(n => n.Genre)
-                    .Where(n => n.GenreId == genreId)
-                    .OrderByDescending(n => n.PostDate)
-                    .Skip((queryObject.pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-
-                totalNews = news.Count();
                 return (news, totalNews);
             }
 
-            // if the genreId is null
             return (null, 0);
         }
+
 
         // #7
         public async Task<(IEnumerable<News?>?, int)> GetNewsWithSortAsync(QueryObject queryObject)
         {
             var totalNews = await _context.News.CountAsync();
             var news = new List<News>();
-            
-            if(!string.IsNullOrEmpty(queryObject.sortBy)) {
-                if(queryObject.sortBy.Equals("numberOfReads", StringComparison.OrdinalIgnoreCase)){
+
+            if (!string.IsNullOrEmpty(queryObject.sortBy))
+            {
+                if (queryObject.sortBy.Equals("numberOfReads", StringComparison.OrdinalIgnoreCase))
+                {
                     news = await _context.News
                         .Include(n => n.Genre)
                         .OrderByDescending(n => n.NumberOfReads)
@@ -153,7 +186,7 @@ namespace news_api.Repository
                     return (news, totalNews);
                 }
             }
-            
+
             news = await _context.News
                 .Include(n => n.Genre)
                 .OrderByDescending(n => n.PostDate)
@@ -167,11 +200,12 @@ namespace news_api.Repository
         // #8
         public async Task<IEnumerable<News?>?> SearchNewsAsync(string search)
         {
-            if(!string.IsNullOrEmpty(search)){
+            if (!string.IsNullOrEmpty(search))
+            {
                 var news = await _context.News
                     .Include(n => n.Genre)
-                    .Where(n => 
-                        n.Title.Contains(search) || 
+                    .Where(n =>
+                        n.Title.Contains(search) ||
                         n.Content.Contains(search) ||
                         n.ShortDescription.Contains(search)
                     ).ToListAsync();

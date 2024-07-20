@@ -19,12 +19,14 @@ namespace news_api.Controllers
     {
         private readonly INewsRepository _newsRepo;
         private readonly IMapper _mapper;
+        private readonly INewsService _newsService;
         public int pageSize { get; set; } = 10;
 
-        public NewsController(INewsRepository newsRepo, IMapper mapper)
+        public NewsController(INewsRepository newsRepo, IMapper mapper, INewsService newsService)
         {
             _newsRepo = newsRepo;
             _mapper = mapper;
+            _newsService = newsService;
         }
 
         // #1
@@ -52,41 +54,93 @@ namespace news_api.Controllers
         }
 
         // #3
+        // [HttpPost]
+        // [Authorize(Roles = "SuperAdmin,Admin")] // Accessible by authenticated users
+        // public async Task<ActionResult<NewsDTO>> CreateNews([FromBody] CreateNewsDTO createNewsDTO)
+        // {
+        //     if(!ModelState.IsValid) return BadRequest(ModelState);
+
+        //     var news = _mapper.Map<News>(createNewsDTO);
+        //     await _newsRepo.AddNewsAsync(news);
+
+        //     return CreatedAtAction(
+        //         nameof(GetNews), 
+        //         new { id = news.NewsId }, 
+        //         _mapper.Map<NewsDTO>(news)
+        //     );
+        // }
+
+        // [HttpPost("upload")]
+        // public async Task<IActionResult> UploadImage([FromForm] CreateNewsWithImageDTO createNewsWithImageDTO)
+        // {
+        //     if (!ModelState.IsValid)
+        //         return BadRequest(ModelState);
+
+        //     if (createNewsWithImageDTO.Image == null || createNewsWithImageDTO.Image.Length == 0)
+        //         return BadRequest("No file uploaded.");
+
+        //     var createdNews = await _newsService.CreateNewsAsync(createNewsWithImageDTO);
+        //     return CreatedAtAction(nameof(GetNews), new { id = createdNews.NewsId }, createdNews);
+        // }
+
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin,Admin")] // Accessible by authenticated users
-        public async Task<ActionResult<NewsDTO>> CreateNews([FromBody] CreateNewsDTO createNewsDTO)
+        public async Task<IActionResult> UploadImage([FromForm] CreateNewsWithImageDTO createNewsWithImageDTO)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var news = _mapper.Map<News>(createNewsDTO);
-            await _newsRepo.AddNewsAsync(news);
+            if (createNewsWithImageDTO.Image == null || createNewsWithImageDTO.Image.Length == 0)
+                return BadRequest("No file uploaded.");
 
-            return CreatedAtAction(
-                nameof(GetNews), 
-                new { id = news.NewsId }, 
-                _mapper.Map<NewsDTO>(news)
-            );
+            // Validate the image type
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var extension = Path.GetExtension(createNewsWithImageDTO.Image.FileName).ToLower();
+            if (!allowedExtensions.Contains(extension))
+            {
+                return BadRequest("Invalid image type. Only JPG, JPEG, PNG, and GIF are allowed.");
+            }
+
+            // Validate the image size (e.g., max 5 MB)
+            var maxSize = 5 * 1024 * 1024;
+            if (createNewsWithImageDTO.Image.Length > maxSize)
+            {
+                return BadRequest("Image size exceeds the maximum allowed size of 5 MB.");
+            }
+
+            var createdNews = await _newsService.CreateNewsAsync(createNewsWithImageDTO);
+            return CreatedAtAction(nameof(GetNews), new { id = createdNews.NewsId }, createdNews);
         }
+
+
+
 
         // #4
+        // [HttpPut("{id:int}")]
+        // public async Task<IActionResult> UpdateNews([FromRoute] int id, [FromBody] UpdateNewsDTO updateNewsDTO)
+        // {
+        //     if(!ModelState.IsValid) return BadRequest(ModelState);
+
+        //     var news = _mapper.Map<News>(updateNewsDTO);
+        //     var existNews = await _newsRepo.UpdateNewsAsync(id, news);
+
+        //     return Ok(_mapper.Map<NewsDTO>(existNews));
+        // }
+
         [HttpPut("{id:int}")]
-        [Authorize(Roles = "SuperAdmin,Admin")] // Accessible by authenticated users
-        public async Task<IActionResult> UpdateNews([FromRoute] int id, [FromBody] UpdateNewsDTO updateNewsDTO)
+        public async Task<IActionResult> UpdateNews([FromRoute] int id, [FromForm] UpdateNewsDTO updateNewsDTO)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var news = _mapper.Map<News>(updateNewsDTO);
-            var existNews = await _newsRepo.UpdateNewsAsync(id, news);
-
-            return Ok(_mapper.Map<NewsDTO>(existNews));
+            var updatedNews = await _newsService.UpdateNewsAsync(id, updateNewsDTO);
+            return Ok(_mapper.Map<NewsDTO>(updatedNews));
         }
+
 
         // #5
         [HttpDelete("{id:int}")]
-        [Authorize(Roles = "SuperAdmin,Admin")] // Accessible by authenticated users
-        public async Task<IActionResult> DeleteNews(int id)
+        public async Task<IActionResult> DeleteNews([FromRoute] int id)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var success = await _newsRepo.DeleteNewsAsync(id);
             if (!success) return NotFound();
@@ -116,11 +170,11 @@ namespace news_api.Controllers
 
         // [HttpGet("sort")]
         [HttpGet("")]
-        [AllowAnonymous] // Accessible by everyone
+        // [AllowAnonymous] // Accessible by everyone
         public async Task<ActionResult<PagedResult<NewsDTO>>> GetNewsWithPagination([FromQuery] QueryObject queryObject)
         {
             var (news, totalNews) = await _newsRepo.GetNewsWithSortAsync(queryObject);
-            var totalPages = (int)System.Math.Ceiling(totalNews / (double) pageSize);
+            var totalPages = (int) System.Math.Ceiling(totalNews / (double) pageSize);
 
             var result = new PagedResult<NewsDTO>
             {
