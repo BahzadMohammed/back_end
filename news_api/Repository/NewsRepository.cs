@@ -77,18 +77,6 @@ namespace news_api.Repository
             return existingNews;
         }
 
-
-        // #5
-        // public async Task<bool> DeleteNewsAsync(int id)
-        // {
-        //     var news = await _context.News.FindAsync(id);
-        //     if (news == null) return false;
-
-        //     _context.News.Remove(news);
-        //     await _context.SaveChangesAsync();
-        //     return true;
-        // }
-
         public async Task<bool> DeleteNewsAsync(int id)
         {
             var news = await _context.News.FindAsync(id);
@@ -215,24 +203,6 @@ namespace news_api.Repository
 
             return null;
         }
-
-
-
-
-
-
-        // >> NOT USED
-        // public async Task<News?> UpdateNumberOfReadsAsync(int id, News news)
-        // {
-        //     var existNews = await _context.News.FindAsync(id);
-        //     if (existNews == null) return null;
-
-        //     existNews.NumberOfReads = news.NumberOfReads;
-
-        //     await _context.SaveChangesAsync();
-        //     return existNews;
-        // }
-
 
     }
 }

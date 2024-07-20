@@ -29,17 +29,6 @@ namespace news_api.Controllers
             _newsService = newsService;
         }
 
-        // #1
-        // [HttpGet]
-        // [AllowAnonymous] // Accessible by everyone
-        // public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
-        // {
-        //     if(!ModelState.IsValid) return BadRequest(ModelState);
-
-        //     var news = await _newsRepo.GetAllNewsAsync();
-        //     return Ok(_mapper.Map<IEnumerable<NewsDTO>>(news));
-        // }
-
         // #2
         [HttpGet("{id:int}")]
         [AllowAnonymous] // Accessible by everyone
@@ -54,35 +43,6 @@ namespace news_api.Controllers
         }
 
         // #3
-        // [HttpPost]
-        // [Authorize(Roles = "SuperAdmin,Admin")] // Accessible by authenticated users
-        // public async Task<ActionResult<NewsDTO>> CreateNews([FromBody] CreateNewsDTO createNewsDTO)
-        // {
-        //     if(!ModelState.IsValid) return BadRequest(ModelState);
-
-        //     var news = _mapper.Map<News>(createNewsDTO);
-        //     await _newsRepo.AddNewsAsync(news);
-
-        //     return CreatedAtAction(
-        //         nameof(GetNews), 
-        //         new { id = news.NewsId }, 
-        //         _mapper.Map<NewsDTO>(news)
-        //     );
-        // }
-
-        // [HttpPost("upload")]
-        // public async Task<IActionResult> UploadImage([FromForm] CreateNewsWithImageDTO createNewsWithImageDTO)
-        // {
-        //     if (!ModelState.IsValid)
-        //         return BadRequest(ModelState);
-
-        //     if (createNewsWithImageDTO.Image == null || createNewsWithImageDTO.Image.Length == 0)
-        //         return BadRequest("No file uploaded.");
-
-        //     var createdNews = await _newsService.CreateNewsAsync(createNewsWithImageDTO);
-        //     return CreatedAtAction(nameof(GetNews), new { id = createdNews.NewsId }, createdNews);
-        // }
-
         [HttpPost]
         public async Task<IActionResult> UploadImage([FromForm] CreateNewsWithImageDTO createNewsWithImageDTO)
         {
@@ -110,21 +70,6 @@ namespace news_api.Controllers
             var createdNews = await _newsService.CreateNewsAsync(createNewsWithImageDTO);
             return CreatedAtAction(nameof(GetNews), new { id = createdNews.NewsId }, createdNews);
         }
-
-
-
-
-        // #4
-        // [HttpPut("{id:int}")]
-        // public async Task<IActionResult> UpdateNews([FromRoute] int id, [FromBody] UpdateNewsDTO updateNewsDTO)
-        // {
-        //     if(!ModelState.IsValid) return BadRequest(ModelState);
-
-        //     var news = _mapper.Map<News>(updateNewsDTO);
-        //     var existNews = await _newsRepo.UpdateNewsAsync(id, news);
-
-        //     return Ok(_mapper.Map<NewsDTO>(existNews));
-        // }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateNews([FromRoute] int id, [FromForm] UpdateNewsDTO updateNewsDTO)
@@ -197,17 +142,5 @@ namespace news_api.Controllers
             return Ok(_mapper.Map<IEnumerable<NewsDTO>>(news));
         }
 
-
-
-
-        // >> NOT USED
-        // [HttpPut("updateNumberOfReads/{id}")]
-        // public async Task<IActionResult> UpdateNumberOfReads([FromRoute] int id, [FromBody] UpdateNumberOfReadsDTO updateNumberOfReadsDTO)
-        // {
-        //     var news = _mapper.Map<News>(updateNumberOfReadsDTO);
-        //     var existNews = await _newsRepo.UpdateNumberOfReadsAsync(id, news);
-
-        //     return Ok(_mapper.Map<NewsDTO>(existNews));
-        // }
     }
 }

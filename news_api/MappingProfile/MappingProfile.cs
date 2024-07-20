@@ -19,7 +19,6 @@ namespace news_api.Mapper
             CreateMap<UpdateNewsDTO, News>();
             CreateMap<Genre, GenreDTO>();
             CreateMap<CreateNewsWithImageDTO, News>();
-            // CreateMap<UpdateNumberOfReadsDTO, News>();
         }
     }
 }

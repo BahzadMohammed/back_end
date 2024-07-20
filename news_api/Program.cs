@@ -37,7 +37,8 @@ builder.Services.AddSwaggerGen();
 // var key = Encoding.ASCII.GetBytes("Jwt:Key"); // Use a secret key stored in a secure place
 
 builder.Services.AddControllers().AddJsonOptions(
-    options => {
+    options =>
+    {
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
         options.JsonSerializerOptions.DictionaryKeyPolicy = null;
     }
@@ -74,13 +75,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:3000") // React app URL
-                   .AllowAnyHeader()
-                   .AllowAnyMethod()
-                   .AllowCredentials(); // Allow credentials
-        });
+    builder =>
+    {
+        builder.WithOrigins("http://localhost:3000") // React app URL
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials(); // Allow credentials
+    });
 });
 
 
@@ -145,18 +146,7 @@ app.Run();
 
 
 
-// var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
-// var jwtKey = builder.Configuration["Jwt:Key"];
-// var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-// var jwtAudience = builder.Configuration["Jwt:Audience"];
-
-// if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
-// {
-//     throw new InvalidOperationException("JWT settings are not configured properly in appsettings.json.");
-// }
-
-// var key = Encoding.ASCII.GetBytes(jwtKey);
-
+//
 // builder.Services.AddSwaggerGen(option =>
 // {
 //     option.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Demo API", Version = "v1" });
@@ -184,45 +174,3 @@ app.Run();
 //         }
 //     });
 // });
-
-
-
-// builder.Services.AddAuthentication(options =>
-// {
-//     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-// })
-// .AddJwtBearer(options =>
-// {
-//     options.RequireHttpsMetadata = false;
-//     options.SaveToken = true;
-//     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-//     {
-//         ValidateIssuer = true,
-//         ValidateAudience = true,
-//         ValidateLifetime = true,
-//         ValidateIssuerSigningKey = true,
-//         ValidIssuer = jwtIssuer,
-//         ValidAudience = jwtAudience,
-//         IssuerSigningKey = new SymmetricSecurityKey(key)
-//     };
-// });
-
-
-
-
-
-// // Seed the database.
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//     try
-//     {
-//         SeedData.Initialize(services);
-//     }
-//     catch (Exception ex)
-//     {
-//         var logger = services.GetRequiredService<ILogger<Program>>();
-//         logger.LogError(ex, "An error occurred seeding the DB.");
-//     }
-// }

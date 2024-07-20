@@ -24,32 +24,6 @@ namespace news_api.Services
             Console.WriteLine($"WebRootPath: {_environment.WebRootPath}");
         }
 
-        // public async Task<NewsDTO> CreateNewsAsync(CreateNewsWithImageDTO createNewsWithImageDTO)
-        // {
-
-        //     // Ensure the WebRootPath is not null
-        //     if (string.IsNullOrEmpty(_environment.WebRootPath))
-        //     {
-        //         throw new InvalidOperationException("WebRootPath is not set.");
-        //     }
-
-        //     var uploadsFolderPath = Path.Combine(_environment.WebRootPath, "uploads");
-        //     Directory.CreateDirectory(uploadsFolderPath);
-
-        //     var filePath = Path.Combine(uploadsFolderPath, createNewsWithImageDTO.Image!.FileName);
-        //     using (var stream = new FileStream(filePath, FileMode.Create))
-        //     {
-        //         await createNewsWithImageDTO.Image.CopyToAsync(stream);
-        //     }
-
-        //     var news = _mapper.Map<News>(createNewsWithImageDTO);
-        //     news.ImageUrl = $"/uploads/{createNewsWithImageDTO.Image.FileName}";
-        //     var createdNews = await _newsRepo.AddNewsAsync(news);
-
-        //     return _mapper.Map<NewsDTO>(createdNews);
-        // }
-
-
         public async Task<NewsDTO> CreateNewsAsync(CreateNewsWithImageDTO createNewsWithImageDTO)
         {
             var uploadsFolderPath = Path.Combine(_environment.WebRootPath, "uploads");

@@ -69,12 +69,6 @@ namespace news_api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = _mapper.Map<User>(updateUserDTO);
-            // Only update the password if a new password is provided
-            // if (!string.IsNullOrWhiteSpace(updateUserDTO.Password))
-            // {
-            //     user.PasswordHash = HashPassword(updateUserDTO.Password);
-            // }
-
             var updatedUser = await _userRepo.UpdateUserAsync(id, user);
 
             if (updatedUser == null) return NotFound();

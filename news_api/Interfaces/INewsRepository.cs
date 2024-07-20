@@ -18,8 +18,5 @@ namespace news_api.Interfaces
         Task<(IEnumerable<News?>?, int)> GetNewsWithSortAsync(QueryObject queryObject);
         Task<IEnumerable<News?>?> SearchNewsAsync(string search);
 
-
-        // >> NOT USED
-        // Task<News?> UpdateNumberOfReadsAsync(int id, News news);
     }
 }

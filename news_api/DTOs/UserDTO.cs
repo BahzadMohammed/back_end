@@ -17,12 +17,10 @@ namespace news_api.DTOs
     {
         [Required]
         [EmailAddress]
-        // [MaxLength(100, ErrorMessage = "Email is too long")]
         public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]
-        // [MaxLength(256, ErrorMessage = "Password is too long")]
         [MinLength(8, ErrorMessage = "The password is too short")]
         public string PasswordHash { get; set; } = string.Empty;
     }
@@ -31,12 +29,10 @@ namespace news_api.DTOs
     {
         [Required]
         [EmailAddress]
-        // [MaxLength(100, ErrorMessage = "Email is too long")]
         public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]
-        // [MaxLength(256)]
         public string PasswordHash { get; set; } = string.Empty;
     }
 

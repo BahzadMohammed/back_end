@@ -22,18 +22,14 @@ namespace news_api.DTOs
     public class CreateNewsDTO
     {
         [Required]
-        // [MaxLength(50, ErrorMessage = "Title is too long")]
-        // [MinLength(5, ErrorMessage = "Title is too short")]
+        [MaxLength(200, ErrorMessage = "Title is too long")]
         public string Title { get; set; } = string.Empty;
 
         [Required]
-        // [MaxLength(100, ErrorMessage = "Short description is too long")]
-        // [MinLength(20, ErrorMessage = "Short description is too short")]
         public string ShortDescription { get; set; } = string.Empty;
 
         [Required]
-        // [MaxLength(2000, ErrorMessage = "Content is too long")]
-        // [MinLength(100, ErrorMessage = "Content is too short")]
+        [MaxLength(2000, ErrorMessage = "Content is too long")]
         public string Content { get; set; } = string.Empty;
 
         [Url]
@@ -44,7 +40,7 @@ namespace news_api.DTOs
         public int GenreId { get; set; }
     }
 
-    public class UpdateNewsDTO 
+    public class UpdateNewsDTO
     {
         [Required]
         public string Title { get; set; } = string.Empty;
@@ -56,7 +52,7 @@ namespace news_api.DTOs
         public string Content { get; set; } = string.Empty;
 
         [Required]
-        public IFormFile ?Image { get; set; } 
+        public IFormFile? Image { get; set; }
 
         [Required]
         public int GenreId { get; set; }
@@ -74,14 +70,11 @@ namespace news_api.DTOs
         public string Content { get; set; } = string.Empty;
 
         [Required]
-        public IFormFile ?Image { get; set; }
+        public IFormFile? Image { get; set; }
 
-        [Required] 
+        [Required]
         public int GenreId { get; set; }
     }
 
-    // public class UpdateNumberOfReadsDTO {
-    //     public int NumberOfReads { get; set; }
-    // }
 
 }
