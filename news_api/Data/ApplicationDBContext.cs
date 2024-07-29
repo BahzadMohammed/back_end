@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using news_api.model;
+using news_api.Models;
 
 namespace news_api.Data
 {
@@ -14,6 +15,7 @@ namespace news_api.Data
         public DbSet<User> Users { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Comment> Comments { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +31,13 @@ namespace news_api.Data
                 new Genre { GenreId = 6, Name = "Science" },
                 new Genre { GenreId = 7, Name = "Entertainment" }
             );
+
+
+            // Configure one-to-many relationship
+            modelBuilder.Entity<News>()
+                .HasMany(n => n.Comments)
+                .WithOne(c => c.News)
+                .HasForeignKey(c => c.NewsId);
 
             
 

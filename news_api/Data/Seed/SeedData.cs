@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using news_api.model;
 using Microsoft.Extensions.Logging;
+using news_api.Models;
 
 namespace news_api.Data.Seed
 {
@@ -16,7 +17,7 @@ namespace news_api.Data.Seed
             using (var scope = serviceProvider.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
-                    
+
                 // Ensure the database is created
                 context.Database.EnsureCreated();
 
@@ -34,6 +35,44 @@ namespace news_api.Data.Seed
                     );
                     context.SaveChanges();
                 }
+
+                if (!context.Comments.Any())
+                {
+                    context.Comments.AddRange(
+                        new Comment
+                        {
+                            AnonymousUser = "lion",
+                            CommentText = "This is a comment from lion.",
+                            NewsId = 1 // Assuming a news item with this ID exists
+                        },
+                        new Comment
+                        {
+                            AnonymousUser = "deer",
+                            CommentText = "This is a comment from deer.",
+                            NewsId = 1 // Assuming a news item with this ID exists
+                        },
+                        new Comment
+                        {
+                            AnonymousUser = "wolf",
+                            CommentText = "This is a comment from wolf.",
+                            NewsId = 2 // Assuming a news item with this ID exists
+                        },
+                        new Comment
+                        {
+                            AnonymousUser = "ant",
+                            CommentText = "This is a comment from ant.",
+                            NewsId = 2 // Assuming a news item with this ID exists
+                        },
+                        new Comment
+                        {
+                            AnonymousUser = "fish",
+                            CommentText = "This is a comment from fish.",
+                            NewsId = 3 // Assuming a news item with this ID exists
+                        }
+                    );
+                    context.SaveChanges();
+                }
+
 
                 // Look for any genres.
                 // if (!context.Genres.Any())

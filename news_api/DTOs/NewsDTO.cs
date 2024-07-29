@@ -17,6 +17,7 @@ namespace news_api.DTOs
         public DateTime LastUpdateDate { get; set; } = DateTime.Now;
         public int NumberOfReads { get; set; }
         public string GenreName { get; set; } = string.Empty;
+        public List<CommentDTO> Comments { get; set; } = new List<CommentDTO>(); // Add Comments
     }
 
     public class CreateNewsDTO

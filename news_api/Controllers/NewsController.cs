@@ -6,6 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using news_api.Data;
 using news_api.DTOs;
 using news_api.Helper;
 using news_api.Interfaces;
@@ -20,13 +22,15 @@ namespace news_api.Controllers
         private readonly INewsRepository _newsRepo;
         private readonly IMapper _mapper;
         private readonly INewsService _newsService;
+        private readonly ApplicationDBContext _context;
         public int pageSize { get; set; } = 10;
 
-        public NewsController(INewsRepository newsRepo, IMapper mapper, INewsService newsService)
+        public NewsController(INewsRepository newsRepo, IMapper mapper, INewsService newsService, ApplicationDBContext context)
         {
             _newsRepo = newsRepo;
             _mapper = mapper;
             _newsService = newsService;
+            _context = context;
         }
 
         // #2
@@ -40,6 +44,16 @@ namespace news_api.Controllers
             if (news == null) return NotFound();
 
             return Ok(_mapper.Map<NewsDTO>(news));
+            // if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            // var news = await _context.News
+            //     .Include(n => n.Genre)
+            //     .Include(n => n.Comments) // Include Comments
+            //     .FirstOrDefaultAsync(n => n.NewsId == id);
+
+            // if (news == null) return NotFound();
+
+            // return Ok(_mapper.Map<NewsDTO>(news));
         }
 
         // #3

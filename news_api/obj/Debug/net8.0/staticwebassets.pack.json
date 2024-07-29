@@ -1,12 +1,16 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\bahza\\Desktop\\news website\\back_end\\news_api\\wwwroot\\uploads\\abedb13e-4467-41ac-9c00-ccaaef6562b0.jpg",
+      "PackagePath": "staticwebassets\\uploads\\abedb13e-4467-41ac-9c00-ccaaef6562b0.jpg"
+    },
+    {
       "Id": "C:\\Users\\bahza\\Desktop\\news website\\back_end\\news_api\\wwwroot\\uploads\\b2e794fa-f9cc-4a7d-8d56-3889215f2ec9.jpg",
       "PackagePath": "staticwebassets\\uploads\\b2e794fa-f9cc-4a7d-8d56-3889215f2ec9.jpg"
     },
     {
-      "Id": "C:\\Users\\bahza\\Desktop\\news website\\back_end\\news_api\\wwwroot\\uploads\\ef0e0228-e2ff-47d7-abc9-bc55f52ab304.jpg",
-      "PackagePath": "staticwebassets\\uploads\\ef0e0228-e2ff-47d7-abc9-bc55f52ab304.jpg"
+      "Id": "C:\\Users\\bahza\\Desktop\\news website\\back_end\\news_api\\wwwroot\\uploads\\f5982fbe-b27b-4400-a4e9-2f6871e7797a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\f5982fbe-b27b-4400-a4e9-2f6871e7797a.jpg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.news_api.props",

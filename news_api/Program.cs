@@ -32,8 +32,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<INewsService, NewsService>();
+// builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
+// builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // var key = Encoding.ASCII.GetBytes("Jwt:Key"); // Use a secret key stored in a secure place
 
 builder.Services.AddControllers().AddJsonOptions(

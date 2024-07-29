@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using news_api.Models;
 
 namespace news_api.model
 {
     public class News
     {
+        
+
         [Key]
         public int NewsId { get; set; }
         
@@ -42,6 +45,9 @@ namespace news_api.model
         
         [ForeignKey("GenreId")]
         public Genre Genre { get; set; } = null!;
+
+        // Collection of comments
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     }
 }

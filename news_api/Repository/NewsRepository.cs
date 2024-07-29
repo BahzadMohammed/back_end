@@ -25,13 +25,25 @@ namespace news_api.Repository
         // #1
         public async Task<IEnumerable<News?>> GetAllNewsAsync()
         {
-            return await _context.News.Include(n => n.Genre).ToListAsync();
+            
+            return await _context.News
+            .Include(n => n.Genre)
+            .Include(n => n.Comments)
+            .ToListAsync();
         }
 
         // #2
         public async Task<News?> GetNewsByIdAsync(int id)
         {
-            var news = await _context.News.Include(n => n.Genre).FirstOrDefaultAsync(n => n.NewsId == id);
+            // var news = await _context.News.Include(n => n.Genre).FirstOrDefaultAsync(n => n.NewsId == id);
+            // if (news == null) return null;
+            // news.NumberOfReads++;
+            // await _context.SaveChangesAsync();
+            // return news;
+            var news = await _context.News
+                .Include(n => n.Genre)
+                .Include(n => n.Comments) 
+                .FirstOrDefaultAsync(n => n.NewsId == id);
             if (news == null) return null;
             news.NumberOfReads++;
             await _context.SaveChangesAsync();
@@ -115,6 +127,7 @@ namespace news_api.Repository
                     {
                         news = await _context.News
                             .Include(n => n.Genre)
+                            .Include(n => n.Comments)
                             .Where(n => n.GenreId == genreId)
                             .OrderByDescending(n => n.NumberOfReads)
                             .Skip((queryObject.pageNumber - 1) * pageSize)
@@ -125,6 +138,7 @@ namespace news_api.Repository
                     {
                         news = await _context.News
                             .Include(n => n.Genre)
+                            .Include(n => n.Comments)
                             .Where(n => n.GenreId == genreId)
                             .OrderByDescending(n => n.PostDate)
                             .Skip((queryObject.pageNumber - 1) * pageSize)
@@ -140,6 +154,7 @@ namespace news_api.Repository
                 {
                     news = await _context.News
                         .Include(n => n.Genre)
+                        .Include(n => n.Comments)
                         .Where(n => n.GenreId == genreId)
                         .OrderByDescending(n => n.PostDate)
                         .Skip((queryObject.pageNumber - 1) * pageSize)
@@ -166,6 +181,7 @@ namespace news_api.Repository
                 {
                     news = await _context.News
                         .Include(n => n.Genre)
+                        .Include(n => n.Comments)
                         .OrderByDescending(n => n.NumberOfReads)
                         .Skip((queryObject.pageNumber - 1) * pageSize)
                         .Take(pageSize)
@@ -177,6 +193,7 @@ namespace news_api.Repository
 
             news = await _context.News
                 .Include(n => n.Genre)
+                .Include(n => n.Comments)
                 .OrderByDescending(n => n.PostDate)
                 .Skip((queryObject.pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -192,6 +209,7 @@ namespace news_api.Repository
             {
                 var news = await _context.News
                     .Include(n => n.Genre)
+                    .Include(n => n.Comments)
                     .Where(n =>
                         n.Title.Contains(search) ||
                         n.Content.Contains(search) ||
